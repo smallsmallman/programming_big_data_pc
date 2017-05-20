@@ -47,6 +47,19 @@ def get_authors(data):
 			break
 	return authors
 
+def get_filetypes(data):
+	sep = 72*'-'
+	days = {}
+	index = 0
+	while index < len(data):
+		try:
+			line = data[index + 1].split('|')[3].strip()
+			int(details[3].strip().split(' ')[0])
+		except IndexError:
+			break
+	return days
+
+	
 def get_busy_day(data):
 	sep = 72*'-'
 	days = {}
@@ -64,7 +77,45 @@ def get_busy_day(data):
 		except IndexError:
 			break
 	return days
-		
+
+'''	
+def get_quantity_files(data):
+	sep = 72*'-'
+	days = {}
+	index = 0
+	while index < len(data):
+		try:
+			
+		except IndexError:
+			break
+	return
+'''		
+
+'''		
+def get_busy_timeofday(data):
+	sep = 72*'-'
+	morning = {}
+	afternoon = {}
+	unsociable = {}
+	index = 0
+	while index < len(data):
+		try:
+			date = data[index + 1].split('|')[2].strip()
+			time = date.split(' ')[1]
+			hour = time.split(':')[0]
+			if hour < 12 and hour >= 7:
+				morning[hour] = 1
+				index += 1
+			elif hour >= 12 and hour < 6:
+				afternoon[hour] = 1
+				index += 1
+			else:
+				unsociable[hour] = 1
+			index = data.index(sep, index + 1)
+		except IndexError:
+			break
+	return morning, 'xxxxx', afternoon, 'xxxxx', unsociable
+'''
 	
 if __name__ == '__main__':
 	# open the file - and read all of the lines.
@@ -72,15 +123,17 @@ if __name__ == '__main__':
 	data = read_file(changes_file)
 	commits = get_commits(data)
 	authors = get_authors(data)
-	day = get_busy_day(data)
+	days = get_busy_day(data)
+	hours = get_busy_timeofday(data)
+	
 
 # print the number of lines read
-	print(len(data))
+	print 'Number of lines of data: ', len(data)
+	print 'Number of commitments: ', len(commits)
+	print 'Authors: ', authors
+	print 'Days: ', days
+	print 'Hours: ', hours
 
-	print authors
-
-	print day
-	
 #print(commits)
 #print commits
 

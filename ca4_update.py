@@ -47,18 +47,6 @@ def get_authors(data):
 			break
 	return authors
 
-def get_filetypes(data):
-	sep = 72*'-'
-	days = {}
-	index = 0
-	while index < len(data):
-		try:
-			line = data[index + 1].split('|')[3].strip()
-			int(details[3].strip().split(' ')[0])
-		except IndexError:
-			break
-	return days
-
 	
 def get_busy_day(data):
 	sep = 72*'-'
@@ -78,45 +66,23 @@ def get_busy_day(data):
 			break
 	return days
 
-'''	
+
 def get_quantity_files(data):
 	sep = 72*'-'
-	days = {}
+	file_count = {}
 	index = 0
 	while index < len(data):
 		try:
-			
-		except IndexError:
-			break
-	return
-'''		
-
-'''		
-def get_busy_timeofday(data):
-	sep = 72*'-'
-	morning = {}
-	afternoon = {}
-	unsociable = {}
-	index = 0
-	while index < len(data):
-		try:
-			date = data[index + 1].split('|')[2].strip()
-			time = date.split(' ')[1]
-			hour = time.split(':')[0]
-			if hour < 12 and hour >= 7:
-				morning[hour] = 1
-				index += 1
-			elif hour >= 12 and hour < 6:
-				afternoon[hour] = 1
-				index += 1
-			else:
-				unsociable[hour] = 1
+			details = data[index + 1].split('|')
+			# parse each of the commits and put them into a list of commits
+			# the author with spaces at end removed.
+			file_count = {'Author': details[1].strip(), 'Changes': data[index+2:data.index('',index+1)]}
 			index = data.index(sep, index + 1)
 		except IndexError:
 			break
-	return morning, 'xxxxx', afternoon, 'xxxxx', unsociable
-'''
+	return file_count
 	
+		
 if __name__ == '__main__':
 	# open the file - and read all of the lines.
 	changes_file = 'changes_python.log'
@@ -124,7 +90,7 @@ if __name__ == '__main__':
 	commits = get_commits(data)
 	authors = get_authors(data)
 	days = get_busy_day(data)
-	hours = get_busy_timeofday(data)
+	files = get_quantity_files(data)
 	
 
 # print the number of lines read
@@ -132,7 +98,34 @@ if __name__ == '__main__':
 	print 'Number of commitments: ', len(commits)
 	print 'Authors: ', authors
 	print 'Days: ', days
-	print 'Hours: ', hours
+	print 'File count per author: ', len(files)
+
+	
+	
+	
+	#def get_busy_timeofday(data):
+#	sep = 72*'-'
+#	morning = {}
+#	afternoon = {}
+#	unsociable = {}
+#	index = 0
+#	while index < len(data):
+#		try:
+#			date = data[index + 1].split('|')[2].strip()
+#			time = date.split(' ')[1]
+#			hour = time.split(':')[0]
+#			if hour < 12 and hour >= 7:
+#				morning[hour] = 1
+#				index += 1
+#			elif hour >= 12 and hour < 6:
+#				afternoon[hour] = 1
+#				index += 1
+#			else:
+#				unsociable[hour] = 1
+#			index = data.index(sep, index + 1)
+#		except IndexError:
+#			break
+#	return morning, 'xxxxx', afternoon, 'xxxxx', unsociable
 
 #print(commits)
 #print commits
